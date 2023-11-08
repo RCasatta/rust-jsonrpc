@@ -39,6 +39,7 @@ pub mod simple_uds;
 
 use serde::{Deserialize, Serialize};
 use serde_json::value::RawValue;
+use serde_json::Value;
 
 pub use crate::client::{Client, Transport};
 pub use crate::error::Error;
@@ -70,7 +71,7 @@ pub struct Request<'a> {
     /// The name of the RPC call.
     pub method: &'a str,
     /// Parameters to the RPC call.
-    pub params: &'a [Box<RawValue>],
+    pub params: Value,
     /// Identifier for this request, which should appear in the response.
     pub id: serde_json::Value,
     /// jsonrpc field, MUST be "2.0".
