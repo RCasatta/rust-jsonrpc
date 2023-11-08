@@ -134,7 +134,7 @@ mod tests {
         let addr = server.local_addr().unwrap();
         let dummy_req = Request {
             method: "arandommethod",
-            params: &[],
+            params: None,
             id: serde_json::Value::Number(4242242.into()),
             jsonrpc: Some("2.0"),
         };
@@ -147,6 +147,7 @@ mod tests {
         };
         let dummy_resp_ser = serde_json::to_vec(&dummy_resp).unwrap();
 
+        let dummy_req = dummy_req.clone();
         let client_thread = thread::spawn(move || {
             let transport = TcpTransport {
                 addr,
@@ -154,7 +155,7 @@ mod tests {
             };
             let client = Client::with_transport(transport);
 
-            client.send_request(dummy_req.clone()).unwrap()
+            client.send_request(dummy_req).unwrap()
         });
 
         let (mut stream, _) = server.accept().unwrap();
